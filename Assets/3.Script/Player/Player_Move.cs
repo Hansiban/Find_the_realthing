@@ -8,11 +8,16 @@ public class Player_Move : MonoBehaviour
 
     public Animator anim;
     public BaseCharacterController controller;
+    public GameObject knife;
+    private bool isAttack = true;
+    private float AttackTime = 0f;
     // Start is called before the first frame update
     void Start()
     {
         anim = FindObjectOfType<Animator>();
         controller = FindObjectOfType<BaseCharacterController>();
+        knife = GameObject.FindWithTag("Attack");
+
     }
 
     // Update is called once per frame
@@ -20,13 +25,28 @@ public class Player_Move : MonoBehaviour
     {
         OnRun();
         OnJump();
-        OnAttack();
+        if (isAttack)
+        {
+            OnAttack();
+
+        }
+        else if (!isAttack)
+        {
+            AttackTime += Time.deltaTime;
+            if (AttackTime > 2f)
+            {
+
+                isAttack = true;
+                AttackTime = 0f;
+            }
+        }
+
     }
 
 
     private void OnRun()
     {
-        if(Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             anim.SetBool("isRun", true);
         }
@@ -38,7 +58,7 @@ public class Player_Move : MonoBehaviour
 
     private void OnJump()
     {
-        if(Input.GetKeyDown(KeyCode.Space)&& controller.isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
         {
             anim.SetTrigger("isJump");
         }
@@ -46,9 +66,20 @@ public class Player_Move : MonoBehaviour
 
     private void OnAttack()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
+
             anim.SetTrigger("isAttack");
+            knife.transform.gameObject.GetComponent<CapsuleCollider>().enabled = true;
+            isAttack = false;
         }
+        Invoke("disAttack", 1.5f);
     }
+
+    private void disAttack()
+    {
+        knife.transform.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+    }
+
+
 }
