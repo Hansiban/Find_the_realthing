@@ -37,7 +37,7 @@ public class AI_Move : MonoBehaviour
     {
         Target = TargetPos[Random.Range(0, TargetPos.Length)];           // 랜덤 타겟설정
         transform.forward = Target.position - transform.position;        // 타겟 바라보기
-        ani.SetTrigger("Walk");
+       
     }
 
     private bool isArrive()        // 타겟 주변에 있는지

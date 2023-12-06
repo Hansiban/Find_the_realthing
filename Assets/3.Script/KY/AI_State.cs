@@ -31,6 +31,5 @@ public class AI_State : MonoBehaviour
     private void OnDie()
     {
         isDie = true;
-        animator.SetTrigger("Die");
     }
 }
